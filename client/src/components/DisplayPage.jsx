@@ -12,7 +12,9 @@ const DisplayPage = () => {
 
   const fetchMenu = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/menu')
+      const response = await axios.get(
+        'https://mess-menu-app.onrender.com/api/menu'
+      )
       setMenuImageUrl(response.data)
     } catch (error) {
       console.error(error)

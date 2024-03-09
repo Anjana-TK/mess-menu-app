@@ -16,9 +16,13 @@ const UploadPage = () => {
       const formData = new FormData()
       formData.append('photo', selectedFile)
 
-      await axios.post('http://localhost:5000/api/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      })
+      await axios.post(
+        'https://mess-menu-app.onrender.com/api/upload',
+        formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        }
+      )
 
       // Show upload success alert
       alert('Upload success!')
