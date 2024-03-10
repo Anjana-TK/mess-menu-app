@@ -2,13 +2,23 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import DisplayPage from './components/DisplayPage'
 import UploadPage from './components/UploadPage'
+import { Navbar, Typography } from '@material-tailwind/react'
 
 function App() {
   return (
     <div className="App">
-      <h1 className="mb-4 text-2xl  text-gray-900 bg-blue dark:text-white md:text-5xl lg:text-6xl">
-        Dinner Menu
-      </h1>
+      <Navbar className="px-6 py-3 bg-blue-100">
+        <div className="flex items-center justify-between text-blue-gray-900">
+          <Typography
+            as="a"
+            href="#"
+            variant="h6"
+            className="mr-4 cursor-pointer py-1.5"
+          >
+            Mess Menu
+          </Typography>
+        </div>
+      </Navbar>
       <Router>
         <Routes>
           <Route path="/" element={<DisplayPage />} />
