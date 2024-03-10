@@ -46,19 +46,24 @@ app.post('/api/upload', upload.single('photo'), async (req, res) => {
     res.status(500).send('Internal Server Error')
   }
 })
-
-// API endpoint to retrieve today's dinner photo
+// API endpoint to retrieve the latest dinner photo uploaded within the last 3 hours
 app.get('/api/menu', async (req, res) => {
   try {
-    const today = new Date().setHours(0, 0, 0, 0)
-    const menu = await Menu.findOne({ date: { $gte: today } }).sort({
+    const threeHoursAgo = new Date(Date.now() - 3 * 60 * 60 * 1000) // Calculate the time 3 hours ago
+    const menu = await Menu.findOne({ date: { $gte: threeHoursAgo } }).sort({
       date: 'desc',
     })
 
+    // Delete any menu photos not uploaded within the last 3 hours
+    await Menu.deleteMany({ date: { $lt: threeHoursAgo } })
+
     if (menu) {
-      res.send(menu.imageUrl)
+      res.json({
+        imageUrl: menu.imageUrl,
+        uploadTime: menu.date, // Send the time the image was uploaded
+      })
     } else {
-      res.status(404).send('No menu photo found for today.')
+      res.status(404).send('No menu photo found within the last 3 hours.')
     }
   } catch (error) {
     console.error(error)

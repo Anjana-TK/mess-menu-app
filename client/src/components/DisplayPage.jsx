@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
 const DisplayPage = () => {
-  const [menuImageUrl, setMenuImageUrl] = useState('')
+  const [menuData, setMenuData] = useState({ imageUrl: '', uploadTime: '' })
   const [isLoading, setIsLoading] = useState(false) // Add a loading state
 
   useEffect(() => {
@@ -15,7 +15,7 @@ const DisplayPage = () => {
       const response = await axios.get(
         'https://mess-menu-app.onrender.com/api/menu'
       )
-      setMenuImageUrl(response.data)
+      setMenuData(response.data)
     } catch (error) {
       console.error(error)
     } finally {
@@ -30,11 +30,16 @@ const DisplayPage = () => {
         <div className="max-w-md mx-auto bg-white p-6 rounded-md shadow-md">
           {isLoading ? (
             <p>Loading menu...</p> // Display loading message
-          ) : menuImageUrl ? (
-            <img
-              src={`data:image/jpeg;base64,${menuImageUrl}`}
-              alt="Today's Dinner"
-            />
+          ) : menuData.imageUrl ? (
+            <>
+              <img
+                src={`data:image/jpeg;base64,${menuData.imageUrl}`}
+                alt="Today's Dinner"
+              />
+              <p>
+                Uploaded at: {new Date(menuData.uploadTime).toLocaleString()}
+              </p>
+            </>
           ) : (
             <p>No menu photo available for today.</p>
           )}
